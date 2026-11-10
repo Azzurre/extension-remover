@@ -87,6 +87,33 @@ def double_check_removal(directory: str, file_extension: str) -> None:
             print(file_path)
     else:
         print(f"All files with extension '{file_extension}' have been successfully removed.")
+        
+def remove_matching_files(matching_files):
+    total = len(matching_files)
+    removed = 0
+    errors = []
+    
+    for index, file_info in enumerate(matching_files, start=1):
+        file_path = file_info['path']
+        
+        try:
+            os.remove(file_path)
+            removed += 1
+        except OSError as error:
+            errors.append((f"Error removing {file_path}: {error}"))
+            
+        # Display progress
+        bar_length = 20
+        filled = int(bar_length * index / total)
+        progress_bar = f"[{'#' * filled}{'.' * (bar_length - filled)}] {index}/{total} files removed"
+        print(progress_bar, end='\r')
+    print()  # Move to the next line after progress bar
+    print(f"Finished removing files. Total removed: {removed}. Errors: {len(errors)}.")
+    
+    if errors:
+        print("Errors encountered during removal:")
+        for error in errors:
+            print(error)
 
 def main():
     directory = input("Enter the directory path: ")
@@ -113,6 +140,18 @@ def main():
         
         if not matching_files:
             print(f"No files with extension '{file_extension}' found in the specified directory and its subfolders.")
+            return
+        
+        print("\n --- File Removal Progress ---")
+        print(f"Folder: {directory}")
+        print(f"File Extension: {file_extension}")
+        print(f"Matching Files Found: {len(matching_files)}")
+        
+        confirmation = input("Do you want to proceed with the removal of these files? (y/n): ").strip().lower()
+        if confirmation == "y":
+            remove_matching_files(matching_files)
+        else:
+            print("File removal cancelled.")
             return
         
         remove_specified_filetype(directory, file_extension)
