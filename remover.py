@@ -109,6 +109,12 @@ def main():
             print("Invalid file extension. Please provide a valid file extension starting with a dot (e.g., .txt).")
             return
         
+        matching_files = [file_info for file_info in file_info_list if file_info['name'].lower().endswith(file_extension.lower())]
+        
+        if not in matching_files:
+            print(f"No files with extension '{file_extension}' found in the specified directory and its subfolders.")
+            return
+        
         remove_specified_filetype(directory, file_extension)
         double_check_removal(directory, file_extension)
         print("File removal process completed.")
