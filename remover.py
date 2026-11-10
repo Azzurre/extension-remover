@@ -99,11 +99,16 @@ def main():
     if confirmation != 'y':
         print("File removal cancelled.")
         return
-    
+
     if os.path.isdir(directory):
         file_info_list = scan_subfolders(directory)
         for file_info in file_info_list:
             print(file_info)
+        
+        if not file_extension.startswith('.') or file_extension == '.':
+            print("Invalid file extension. Please provide a valid file extension starting with a dot (e.g., .txt).")
+            return
+        
         remove_specified_filetype(directory, file_extension)
         double_check_removal(directory, file_extension)
         print("File removal process completed.")
