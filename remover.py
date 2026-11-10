@@ -111,7 +111,7 @@ def main():
         
         matching_files = [file_info for file_info in file_info_list if file_info['name'].lower().endswith(file_extension.lower())]
         
-        if not in matching_files:
+        if not matching_files:
             print(f"No files with extension '{file_extension}' found in the specified directory and its subfolders.")
             return
         
