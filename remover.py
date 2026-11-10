@@ -90,7 +90,15 @@ def double_check_removal(directory: str, file_extension: str) -> None:
 
 def main():
     directory = input("Enter the directory path: ")
-    file_extension = input("Enter the file extension to remove (e.g., .txt): ")
+    file_extension = input("Enter the file extension to remove (e.g., .txt): ").strip()
+    if not file_extension.startswith('.') or file_extension == '.':
+        print("Invalid file extension. Please provide a valid file extension starting with a dot (e.g., .txt).")
+        return
+    
+    confirmation = input(f"Are you sure you want to remove all files with extension '{file_extension}' from '{directory}'? (y/n): ").strip().lower()
+    if confirmation != 'y':
+        print("File removal cancelled.")
+        return
     
     if os.path.isdir(directory):
         file_info_list = scan_subfolders(directory)
