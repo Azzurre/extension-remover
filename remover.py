@@ -58,14 +58,18 @@ def remove_specified_filetype(directory: str, file_extension: str) -> None:
     
     for root, dirs, files in os.walk(directory):
         for filename in files:
-            if filename.endswith(file_extension):
-                file_path = os.path.join(root, filename)
-                try:
-                    os.remove(file_path)
-                    print(f"Removed: {file_path}")
-                except Exception as e:
-                    print(f"Error removing {file_path}: {e}")
-                    continue
+            if filename.exists(file_extension):
+                if filename.endswith(file_extension):
+                    file_path = os.path.join(root, filename)
+                    try:
+                        os.remove(file_path)
+                        print(f"Removed: {file_path}")
+                    except Exception as e:
+                        print(f"Error removing {file_path}: {e}")
+                        continue
+            else:
+                print(f"File {filename} does not exist in {root}. Skipping removal.")
+                
                     
 def double_check_removal(directory: str, file_extension: str) -> None:
     """
